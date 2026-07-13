@@ -80,10 +80,32 @@ export default function ChatWidget() {
               </div>
             ))}
             {leadMode && !leadSent && (
-              <div className="mt-3 space-y-2 rounded-lg border border-clay-200 bg-white p-3">
-                <input placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded border border-clay-200 px-2 py-1 text-sm" />
-                <input placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full rounded border border-clay-200 px-2 py-1 text-sm" />
-                <button onClick={submitLead} className="w-full rounded bg-clay-600 py-1.5 text-sm text-white hover:bg-clay-700">Request callback</button>
+              <div className="mt-3 space-y-3 rounded-2xl border border-clay-200 bg-white p-4 shadow-md transition-all duration-300">
+                <div className="text-xs font-semibold text-clay-700 uppercase tracking-wider">Request Callback</div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-xl border border-clay-200 bg-clay-50 px-3 py-2 text-sm text-ink-900 focus:border-clay-500 focus:bg-white focus:outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Phone number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full rounded-xl border border-clay-200 bg-clay-50 px-3 py-2 text-sm text-ink-900 focus:border-clay-500 focus:bg-white focus:outline-none transition-all"
+                  />
+                </div>
+                <button
+                  onClick={submitLead}
+                  className="w-full rounded-full bg-clay-600 py-2 text-sm font-medium text-white shadow-sm hover:bg-clay-700 transition-colors"
+                >
+                  Request Callback
+                </button>
               </div>
             )}
           </div>
