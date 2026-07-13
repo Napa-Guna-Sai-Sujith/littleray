@@ -44,7 +44,7 @@ export default function ChatWidget() {
     await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email: "chat@lead.local", phone, source: "chat_widget", message: "Chat widget lead" }),
+      body: JSON.stringify({ name, email: "goondasai@gmail.com", phone, source: "chat_widget", message: "Chat widget lead" }),
     });
     setLeadSent(true);
     setMsgs((m) => [...m, { from: "bot", text: "Got it! A designer will call you shortly. Meanwhile, feel free to browse our portfolio." }]);

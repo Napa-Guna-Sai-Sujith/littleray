@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { leads, events, cities } from "@/db/schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
+import { sendEmail } from "@/lib/mail";
 
 const schema = z.object({
   name: z.string().min(1).max(120),
@@ -44,12 +45,48 @@ export async function POST(req: NextRequest) {
     budget: data.budget,
   }).returning();
 
-  // Analytics event + stubbed notification
+  // Analytics event
   await db.insert(events).values({
     eventType: "lead_submitted",
     metadata: { leadId: inserted.id, source: inserted.source },
   });
-  console.log(`[notify] Would send SMS/email to ${data.phone} / ${data.email} (Twilio/SendGrid stub)`);
+
+  // Send email to Administrator
+  try {
+    await sendEmail({
+      to: "napagunasaisujith@gmail.com",
+      subject: `New Lead: ${inserted.name}`,
+      text: `A new lead has been submitted:
+Name: ${inserted.name}
+Email: ${inserted.email}
+Phone: ${inserted.phone}
+Source: ${inserted.source}
+Message: ${inserted.message || "No message"}
+BHK: ${inserted.bhk || "N/A"}
+Property Type: ${inserted.propertyType || "N/A"}
+Budget: ${inserted.budget || "N/A"}`
+    });
+  } catch (err) {
+    console.error("Failed to send admin email:", err);
+  }
+
+  // Send confirmation email to Customer
+  try {
+    await sendEmail({
+      to: inserted.email,
+      subject: "We received your request! - Little Ray Interio",
+      text: `Hi ${inserted.name},
+
+Thank you for reaching out to Little Ray Interio. A designer will contact you shortly at ${inserted.phone}.
+
+Meanwhile, feel free to browse our portfolio!
+
+Best regards,
+Little Ray Interio Team`
+    });
+  } catch (err) {
+    console.error("Failed to send customer confirmation email:", err);
+  }
 
   return NextResponse.json({ ok: true, leadId: inserted.id });
 }
