@@ -45,7 +45,11 @@ If you prefer to host the entire Next.js website on Render as a **Web Service**:
 5. Click **Advanced** to add **Environment Variables**:
    - Add `DATABASE_URL` with your database connection string (either your Neon connection string or Render PostgreSQL string).
    - Add `JWT_SECRET` with a secure random string.
-   - Add `NEXT_PUBLIC_SITE_URL` with your Render service URL (e.g. `https://littleray.onrender.com`).
+   - Add `NEXT_PUBLIC_SITE_URL`:
+     > [!TIP]
+     > **How to get the URL before deploying:** 
+     > On Render, your default URL will be `https://<web-service-name>.onrender.com` (using the Name you typed in Step 4). For example, if you name your service `littleray-interiors`, your URL will be `https://littleray-interiors.onrender.com`.
+     > If you are unsure, you can temporarily add `https://localhost:3000` as a placeholder, let the first deploy finish, copy the generated URL from your Render dashboard, update this variable in Settings, and click **Clear Cache and Deploy** to redeploy.
 6. Click **Create Web Service**. Render will install dependencies, build the Next.js production build, and launch the server.
 
 ---
